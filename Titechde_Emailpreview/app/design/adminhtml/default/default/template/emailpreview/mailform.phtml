@@ -1,0 +1,211 @@
+
+<style>
+body {
+    color: #2f2f2f;
+    font: 12px/1.5em Arial,Helvetica,sans-serif;
+    width:100%;
+    overflow: hidden;
+}
+.divleft {
+    padding: 22px 0 22px 10px;
+    width:46%;
+    float:left;
+}
+.divright {
+    padding: 0px;
+    width:49%;
+    float:left;
+}
+.label { font-size:12px; }
+.required { color:#FF0000; }
+.content-header h3 {
+    color: #eb5e00;
+    float: left;
+    font-size: 1.25em;
+    line-height: 1.2em;
+    margin: 0.3em 0.5em 0 0;
+    width:100%;
+}
+.icon-head {
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    min-height: 18px;
+    padding-left: 10px;
+}
+.numberCircle {
+    border-radius: 50%;
+    behavior: url(PIE.htc); /* remove if you don't care about IE8 */
+
+    width: 26px;
+    height: 26px;
+    padding: 6px;
+
+    background: #F9B15B;
+    border: 2px solid #666;
+    color: #FFF;
+    text-align: center;
+
+    font: 22px Arial, sans-serif;
+}
+table p {
+    font: 12px/1.5em Arial,Helvetica,sans-serif;
+}
+.colmn { margin-bottom:2em; clear:both; float:left; width:100%;}
+button, .form-button {
+    background: #ffac47 url("images/btn_bg.gif") repeat-x scroll 0 100%;
+    border-color: #ed6502 #a04300 #a04300 #ed6502;
+    border-style: solid;
+    border-width: 1px;
+    color: #fff;
+    cursor: pointer;
+    font: bold 12px arial,helvetica,sans-serif;
+    padding: 1px 7px 2px;
+    text-align: center !important;
+    white-space: nowrap;
+}
+
+</style>
+<div class="content-header">
+    <?php
+        echo '<h3 class="icon-head ">Please fill in the form</h3>';
+        //echo $this->getOrderCount();
+    ?>
+    <form action="<?php echo $this->getUrl('/emailpreview/createOrder/') ?>" method="post">
+            <input type="hidden" name="send_type" id="send_type" value="<?php echo Mage::getSingleton('core/session')->getMytype(); ?>" />
+            <input type="hidden" name="send_text" id="send_text" value="" />
+            <input type="hidden" name="send_styles" id="send_styles" value="" />
+            <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+        <div class="colmn">
+            <div class="divleft">
+
+                    <div>
+                        <label for="testemail"  class="label">Email Address</label> <span class="required">*</span>
+                        <input type="text" name="testemail" id="testemail" value="" required />
+                    </div>
+
+            </div>
+            <div  class="divright">
+                <table width="100%">
+                    <tr>
+                        <td width="10%"><span class="numberCircle">1</span></td>
+                        <td width="90%"><p> This is where you can test your e-Mail template. The extension uses the magento process to send an email to you just like it would when buying something from the store. please fill in the email address you'd like to have the test-email sent to.</p></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <?php if($this->getOrderCount()==0) { ?>
+        <div class="colmn">
+            <div class="divleft">
+
+                    <div>
+                        <label for="testemail"  class="label">Select Products</label> <span class="required">*</span><br>
+                        <?php if (count($this->getProductList()) > 0) { ?>
+                        <select name="product1" required>
+                            <option value="">Select</option>
+                            <?php
+                            foreach($this->getProductList() as $product){
+                                $obj = Mage::getModel('catalog/product');
+                                $productid = $product['entity_id'];
+                                $_product = $obj->load($productid); // Enter your Product Id in $product_id
+                                $productID = $_product->getEntityId();
+                                $productName = $_product->getName().' - '.$_product->getSku();
+                                echo '<option value="'.$productID.'">'.$productName.'</option>';
+                            } ?>
+                        </select>
+                        <br />
+                        <?php if (count($this->getProductList()) > 1) { ?>
+                        <select name="product2">
+                            <option value="">Select</option>
+                            <?php
+                            foreach($this->getProductList() as $product){
+                                $obj = Mage::getModel('catalog/product');
+                                $productid = $product['entity_id'];
+                                $_product = $obj->load($productid); // Enter your Product Id in $product_id
+                                $productID = $_product->getEntityId();
+                                $productName = $_product->getName().' - '.$_product->getSku();
+                                echo '<option value="'.$productID.'">'.$productName.'</option>';
+                            } ?>
+                        </select>
+                        <?php } ?>
+                        <?php }?>
+                            <a href="<?php echo $this->getUrl('/emailpreview/createProduct/') ?>"><button class="scalable save" type="button" title="Generate Product" id="btnpro"><span><span><span>Generate Product</span></span></span></button></a>
+
+                    </div>
+
+            </div>
+            <div  class="divright">
+               <table width="100%">
+                    <tr>
+                        <td width="10%"><span class="numberCircle">2</span></td>
+                        <td width="90%"><p> This is where you can select a product from your store to show up in your email. If you don't have any products set up yet, you can either come back later and try again or you let us setup one for you. We will just generate some sample data. You can erase again later.</p></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <?php if (count($this->getProductList()) > 0) { ?>
+        <div class="colmn">
+            <div class="divleft">
+                    <div>
+                        <label for="testemail"  class="label">Select Payment</label> <span class="required">*</span>
+                       <div>
+                            <select name="payment" >
+                                <option value="">Select</option>
+                                    <?php
+                                        $payments = Mage::getSingleton('payment/config')->getActiveMethods();
+                                        foreach ($payments as $paymentCode=>$paymentModel) {
+                                            $paymentTitle = Mage::getStoreConfig('payment/'.$paymentCode.'/title');
+                                            echo '<option value="'.$paymentCode.'">'.$paymentTitle.'</option>';
+                                        }
+                                    ?>
+                            </select>
+                        </div>
+                    </div>
+
+                     <div>
+                        <label for="testemail"  class="label">Select Shipping Method</label> <span class="required">*</span>
+                       <div>
+                            <select name="shipping" >
+                                <option value="">Select</option>
+                                <?php
+                                   // $methods = array(array('value'=>'','label'=>Mage::helper('adminhtml')->__('--Please Select--')));
+                                    $activeCarriers = Mage::getSingleton('shipping/config')->getActiveCarriers();
+                                    foreach($activeCarriers as $carrierCode => $carrierModel)
+                                    {
+                                        $options = array();
+                                        if( $carrierMethods = $carrierModel->getAllowedMethods() )
+                                        {
+                                           foreach ($carrierMethods as $methodCode => $method)
+                                           {
+                                                $code= $carrierCode.'_'.$methodCode;
+                                                //$options[]=array('value'=>$code,'label'=>$method);
+                                           }
+                                           $carrierTitle = Mage::getStoreConfig('carriers/'.$carrierCode.'/title');
+                                        }
+                                        echo '<option value="'.$code.'">'.$carrierTitle.'</option>';
+                                    }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+
+
+            </div>
+            <div  class="divright">
+                <table width="100%">
+                    <tr>
+                        <td width="10%"><span class="numberCircle">3</span></td>
+                        <td width="90%"><p> This is where you can select a payment and shipping option that should show up in you email. If you have not enabled any options please do so now.</p></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <input type="hidden" name="orderid" id="orderid" value="0" />
+        <?php } } else { ?>
+            <input type="hidden" name="orderid" id="orderid" value="<?php echo $this->getOrderCount(); ?>" />
+        <?php } ?>
+        <?php if (count($this->getProductList()) > 0) { ?>
+        <button style="" class="scalable save" type="submit" title="Send Email" id="btnm"><span><span><span>Send Email</span></span></span></button>
+        <?php } ?>
+    </form>
+
+</div>

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @category Emailpreview
+ * @package Titechde_Emailpreview
+ * @authors TiTech <info@titechnologies.in, http://www.titechnologies.de/>
+ * @developer TiTech <info@titechnologies.in, http://www.titechnologies.de/>
+ * @version 1.0.0
+ * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+ -->
+<layout version="0.1.0">
+   <!-- <emailpreview_adminhtml_emailpreview_index>
+        <reference name="content">
+            <block type="emailpreview/adminhtml_emailpreview" output="toHtml" name="emailpreview"  template="emailpreview/mailform.phtml" />
+        </reference>
+    </emailpreview_adminhtml_emailpreview_index> -->
+    <adminhtml_emailpreview_index>
+        <!-- <reference name="root">
+            <remove name="head" />
+            <remove name="header" />
+            <remove name="footer" />
+            <remove name="menu" />
+        </reference> -->
+       <reference name="root">
+            <remove name="footer" />
+        </reference>
+       <reference name="content">
+            <block type="emailpreview/adminhtml_emailpreview" name="emailpreview" />
+        </reference>
+    </adminhtml_emailpreview_index>
+    <adminhtml_emailpreview_preview>
+        <block type="core/template" name="root" output="toHtml" template="emailpreview/preview.phtml">
+            <block type="emailpreview/adminhtml_templatepreview" name="content" as="content"></block>
+        </block>
+    </adminhtml_emailpreview_preview>
+</layout>
