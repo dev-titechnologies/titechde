@@ -96,7 +96,8 @@ class Mage_Adminhtml_Block_System_Email_Template_Edit extends Mage_Adminhtml_Blo
                         'label'   => Mage::helper('emailpreview')->__('Send Test Mail With Data'),
                         'onclick' => 'templateControl.sendTemplate();',
                         'value'   => $this->helper('emailpreview')->__('Test popup dialog >>'),
-                        'id'      => 'send_button'
+                        'id'      => 'send_button',
+                        'style'   => 'display:none;'
                     )
                 )
         );

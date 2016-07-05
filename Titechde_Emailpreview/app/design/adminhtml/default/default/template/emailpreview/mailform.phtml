@@ -1,4 +1,13 @@
-
+<?php
+/**
+ * @category Emailpreview
+ * @package Titechde_Emailpreview
+ * @authors TiTech <info@titechnologies.in, http://www.titechnologies.de/>
+ * @developer TiTech <info@titechnologies.in, http://www.titechnologies.de/>
+ * @version 1.0.0
+ * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+?>
 <style>
 body {
     color: #2f2f2f;
@@ -66,10 +75,7 @@ button, .form-button {
 
 </style>
 <div class="content-header">
-    <?php
-        echo '<h3 class="icon-head ">Please fill in the form</h3>';
-        //echo $this->getOrderCount();
-    ?>
+    <?php echo '<h3 class="icon-head ">'.$this->__("Please fill in the form").'</h3>'; ?>
     <form action="<?php echo $this->getUrl('/emailpreview/createOrder/') ?>" method="post">
             <input type="hidden" name="send_type" id="send_type" value="<?php echo Mage::getSingleton('core/session')->getMytype(); ?>" />
             <input type="hidden" name="send_text" id="send_text" value="" />
@@ -79,7 +85,7 @@ button, .form-button {
             <div class="divleft">
 
                     <div>
-                        <label for="testemail"  class="label">Email Address</label> <span class="required">*</span>
+                        <label for="testemail"  class="label"><?php echo $this->__("Email Address"); ?></label> <span class="required">*</span>
                         <input type="text" name="testemail" id="testemail" value="" required />
                     </div>
 
@@ -88,47 +94,48 @@ button, .form-button {
                 <table width="100%">
                     <tr>
                         <td width="10%"><span class="numberCircle">1</span></td>
-                        <td width="90%"><p> This is where you can test your e-Mail template. The extension uses the magento process to send an email to you just like it would when buying something from the store. please fill in the email address you'd like to have the test-email sent to.</p></td>
+                        <td width="90%"><p> <?php echo $this->__("This is where you can test your e-Mail template. The extension uses the magento process to send an email to you just like it would when buying something from the store. please fill in the email address you'd like to have the test-email sent to."); ?></p></td>
                     </tr>
                 </table>
             </div>
         </div>
-        <?php if($this->getOrderCount()==0) { ?>
+        <?php if ($this->getOrderCount()==0) { ?>
         <div class="colmn">
             <div class="divleft">
 
                     <div>
-                        <label for="testemail"  class="label">Select Products</label> <span class="required">*</span><br>
+                        <label for="testemail"  class="label"><?php echo $this->__("Select Products"); ?></label> <span class="required">*</span><br>
                         <?php if (count($this->getProductList()) > 0) { ?>
-                        <select name="product1" required>
-                            <option value="">Select</option>
-                            <?php
-                            foreach($this->getProductList() as $product){
-                                $obj = Mage::getModel('catalog/product');
-                                $productid = $product['entity_id'];
-                                $_product = $obj->load($productid); // Enter your Product Id in $product_id
-                                $productID = $_product->getEntityId();
-                                $productName = $_product->getName().' - '.$_product->getSku();
-                                echo '<option value="'.$productID.'">'.$productName.'</option>';
-                            } ?>
-                        </select>
-                        <br />
-                        <?php if (count($this->getProductList()) > 1) { ?>
-                        <select name="product2">
-                            <option value="">Select</option>
-                            <?php
-                            foreach($this->getProductList() as $product){
-                                $obj = Mage::getModel('catalog/product');
-                                $productid = $product['entity_id'];
-                                $_product = $obj->load($productid); // Enter your Product Id in $product_id
-                                $productID = $_product->getEntityId();
-                                $productName = $_product->getName().' - '.$_product->getSku();
-                                echo '<option value="'.$productID.'">'.$productName.'</option>';
-                            } ?>
-                        </select>
-                        <?php } ?>
-                        <?php }?>
-                            <a href="<?php echo $this->getUrl('/emailpreview/createProduct/') ?>"><button class="scalable save" type="button" title="Generate Product" id="btnpro"><span><span><span>Generate Product</span></span></span></button></a>
+                            <select name="product1" required>
+                                <option value=""><?php echo $this->__("Select"); ?></option>
+                                <?php
+                                    foreach ($this->getProductList() as $product) {
+                                        $obj = Mage::getModel('catalog/product');
+                                        $productid = $product['entity_id'];
+                                        $_product = $obj->load($productid); // Enter your Product Id in $product_id
+                                        $productID = $_product->getEntityId();
+                                        $productName = $_product->getName().' - '.$_product->getSku();
+                                        echo '<option value="'.$productID.'">'.$productName.'</option>';
+                                    }
+                                ?>
+                            </select>
+                            <br />
+                            <?php if (count($this->getProductList()) > 1) { ?>
+                                <select name="product2">
+                                    <option value=""><?php echo $this->__("Select"); ?></option>
+                                    <?php
+                                        foreach ($this->getProductList() as $product) {
+                                            $obj = Mage::getModel('catalog/product');
+                                            $productid = $product['entity_id'];
+                                            $_product = $obj->load($productid); // Enter your Product Id in $product_id
+                                            $productID = $_product->getEntityId();
+                                            $productName = $_product->getName().' - '.$_product->getSku();
+                                            echo '<option value="'.$productID.'">'.$productName.'</option>';
+                                        }
+                                    ?>
+                                </select>
+                        <?php } } ?>
+                            <a href="<?php echo $this->getUrl('/emailpreview/createProduct/') ?>"><button class="scalable save" type="button" title="<?php echo $this->__("Generate Product"); ?>" id="btnpro"><span><span><span><?php echo $this->__("Generate Product"); ?></span></span></span></button></a>
 
                     </div>
 
@@ -137,7 +144,7 @@ button, .form-button {
                <table width="100%">
                     <tr>
                         <td width="10%"><span class="numberCircle">2</span></td>
-                        <td width="90%"><p> This is where you can select a product from your store to show up in your email. If you don't have any products set up yet, you can either come back later and try again or you let us setup one for you. We will just generate some sample data. You can erase again later.</p></td>
+                        <td width="90%"><p> <?php echo $this->__("This is where you can select a product from your store to show up in your email. If you don't have any products set up yet, you can either come back later and try again or you let us setup one for you. We will just generate some sample data. You can erase again later."); ?></p></td>
                     </tr>
                 </table>
             </div>
@@ -146,10 +153,10 @@ button, .form-button {
         <div class="colmn">
             <div class="divleft">
                     <div>
-                        <label for="testemail"  class="label">Select Payment</label> <span class="required">*</span>
+                        <label for="testemail"  class="label"><?php echo $this->__("Select Payment"); ?></label> <span class="required">*</span>
                        <div>
                             <select name="payment" >
-                                <option value="">Select</option>
+                                <option value=""><?php echo $this->__("Select"); ?></option>
                                     <?php
                                         $payments = Mage::getSingleton('payment/config')->getActiveMethods();
                                         foreach ($payments as $paymentCode=>$paymentModel) {
@@ -162,22 +169,17 @@ button, .form-button {
                     </div>
 
                      <div>
-                        <label for="testemail"  class="label">Select Shipping Method</label> <span class="required">*</span>
+                        <label for="testemail"  class="label"><?php echo $this->__("Select Shipping Method"); ?></label> <span class="required">*</span>
                        <div>
                             <select name="shipping" >
-                                <option value="">Select</option>
+                                <option value=""><?php echo $this->__("Select"); ?></option>
                                 <?php
-                                   // $methods = array(array('value'=>'','label'=>Mage::helper('adminhtml')->__('--Please Select--')));
                                     $activeCarriers = Mage::getSingleton('shipping/config')->getActiveCarriers();
-                                    foreach($activeCarriers as $carrierCode => $carrierModel)
-                                    {
+                                    foreach ($activeCarriers as $carrierCode => $carrierModel) {
                                         $options = array();
-                                        if( $carrierMethods = $carrierModel->getAllowedMethods() )
-                                        {
-                                           foreach ($carrierMethods as $methodCode => $method)
-                                           {
+                                        if ( $carrierMethods = $carrierModel->getAllowedMethods() ) {
+                                           foreach ($carrierMethods as $methodCode => $method) {
                                                 $code= $carrierCode.'_'.$methodCode;
-                                                //$options[]=array('value'=>$code,'label'=>$method);
                                            }
                                            $carrierTitle = Mage::getStoreConfig('carriers/'.$carrierCode.'/title');
                                         }
@@ -194,7 +196,7 @@ button, .form-button {
                 <table width="100%">
                     <tr>
                         <td width="10%"><span class="numberCircle">3</span></td>
-                        <td width="90%"><p> This is where you can select a payment and shipping option that should show up in you email. If you have not enabled any options please do so now.</p></td>
+                        <td width="90%"><p> <?php echo $this->__("This is where you can select a payment and shipping option that should show up in you email. If you have not enabled any options please do so now."); ?></p></td>
                     </tr>
                 </table>
             </div>
@@ -204,7 +206,7 @@ button, .form-button {
             <input type="hidden" name="orderid" id="orderid" value="<?php echo $this->getOrderCount(); ?>" />
         <?php } ?>
         <?php if (count($this->getProductList()) > 0) { ?>
-        <button style="" class="scalable save" type="submit" title="Send Email" id="btnm"><span><span><span>Send Email</span></span></span></button>
+        <button style="" class="scalable save" type="submit" title="<?php echo $this->__("Send Email"); ?>" id="btnm"><span><span><span><?php echo $this->__("Send Email"); ?></span></span></span></button>
         <?php } ?>
     </form>
 

@@ -40,6 +40,15 @@
                 </emailpreview>
             </updates>
         </layout>
+        <translate>
+            <modules>
+                <Titechde_Emailpreview>
+                    <files>
+                        <default>Titechde_Emailpreview.csv</default>
+                    </files>
+                </Titechde_Emailpreview>
+            </modules>
+        </translate>
     </adminhtml>
     <admin>
        <routers>

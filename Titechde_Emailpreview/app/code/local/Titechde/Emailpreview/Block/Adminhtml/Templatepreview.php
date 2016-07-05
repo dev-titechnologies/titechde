@@ -20,13 +20,17 @@ class Titechde_Emailpreview_Block_Adminhtml_Templatepreview extends Mage_Adminht
         $receiveEmail   = $this->getRequest()->getParam('toemail');
         $receiveName    = $this->getRequest()->getParam('toemail');
         $OrderId        = $this->getRequest()->getParam('order_id'); //If exist will get the id else 0
-        $senderEmail    = Mage::getStoreConfig('trans_email/ident_general/email', $defaultStoreId); //Default store email id
-        $senderName     = Mage::getStoreConfig('trans_email/ident_general/name', $defaultStoreId); //Default store user name
+
 
         // Start store emulation process
         // Since the Transactional Email preview process has no mechanism for selecting a store view to use for
         // previewing, use the default store view
         $defaultStoreId         = Mage::app()->getDefaultStoreView()->getId();
+
+        $senderEmail    = Mage::getStoreConfig('trans_email/ident_general/email', $defaultStoreId); //Default store email id
+        $senderName     = Mage::getStoreConfig('trans_email/ident_general/name', $defaultStoreId); //Default store user name
+
+
         $appEmulation           = Mage::getSingleton('core/app_emulation');
         $initialEnvironmentInfo = $appEmulation->startEnvironmentEmulation($defaultStoreId);
 

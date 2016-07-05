@@ -141,6 +141,17 @@
             }
             this.renderPaths(<?php echo $this->getUsedDefaultForPaths(); ?>, 'used_default_for');
             this.renderPaths(<?php echo $this->getUsedCurrentlyForPaths(); ?>, 'used_currently_for');
+
+            //Code for show and hide the send button
+            var currTemp = <?php echo Mage::getStoreConfig('sales_email/order/template'); ?>;
+            var editTemp = <?php echo ($this->getEditMode())?$this->getEditMode():0; ?>;
+
+            if(currTemp == editTemp) {
+                $('send_button').show();
+            } else {
+                $('send_button').hide();
+            }
+            /* ************************************************************************* */
         },
         stripTags: function () {
             if(!window.confirm("<?php echo Mage::helper('core')->jsQuoteEscape($this->__('Are you sure that you want to strip tags?')) ?>")) {
@@ -209,9 +220,7 @@
             if ($('template_subject') != undefined) {
                 $('samplesend_subject').value = $('template_subject').value;
             }
-
-            //templateSendForm.submit();
-            openMyPopup();
+            openMyPopup(); //Show popup
             return false;
         },
 
@@ -229,6 +238,13 @@
             }
 
             this.variables = null;
+
+            var getval = $('template_select').value;
+            if ( getval == "sales_email_order_template") {
+                $('send_button').show();
+            } else {
+                $('send_button').hide();
+            }
 
             new Ajax.Request($('email_template_load_form').action, {
                parameters: Form.serialize($('email_template_load_form'), true),
@@ -314,10 +330,6 @@
 
 <script type="text/javascript">
     function openMyPopup() {
-
-        /*var emailType = a;
-        var emailText = b;
-        var emailStyle = c;*/
         var Ajaxurl = '<?php echo $this->getUrl('/emailpreview/setajax/') ?>?';
 
         new Ajax.Request(Ajaxurl, {
@@ -328,10 +340,7 @@
             }
         });
 
-
-        var url = '<?php echo $this->getUrl('/emailpreview/index/') ?>?';//type=' + emailType + '&text=' + emailText + '&styles' + emailStyle
-
-
+        var url = '<?php echo $this->getUrl('/emailpreview/index/') ?>?';
         if ($('browser_window') && typeof(Windows) != 'undefined') {
             Windows.focus('browser_window');
             return;
@@ -342,7 +351,7 @@
             draggable:true,
             className:'magento',
             windowClassName:'popup-window',
-            title:'Send email preview with sample data',
+            title:'<?php echo $this->__("Send email preview with sample data"); ?>',
             top:80,
             width:800,
             height:500,
